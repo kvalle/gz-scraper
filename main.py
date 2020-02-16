@@ -24,5 +24,10 @@ if __name__ == "__main__":
 
         print("Mail sent.")
 
+        for item in matching_items:
+            dynamodb.mark_as_found(item)
+
+        print("Entries marked as found in DynamoDB.")
+
     else:
         print("No relevant entries found.")

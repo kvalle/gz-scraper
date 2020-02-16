@@ -10,3 +10,14 @@ def get_backlog():
         KeyConditionExpression=Key('for_sale').eq('false')
     )
     return response["Items"]
+
+
+def mark_as_found(item):
+    item['for_sale'] = 'true'
+    table.put_item(Item=item)
+    table.delete_item(
+        Key={
+            'game_name': item['game_name'],
+            'for_sale': 'false'
+        }
+    )
