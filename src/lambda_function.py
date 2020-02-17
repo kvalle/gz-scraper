@@ -10,6 +10,10 @@ def lambda_handler(event, context):
 def run_scraper():
     backlog = dynamodb.get_backlog()
     new_games = scrape.get_games(number_of_pages=3)
+
+    if len(new_games) == 0:
+        print("ERROR: Found no items while scraping. Something is probably wrong.")
+    
     matching_items = filtering.filter_relevant_items(new_games, backlog)
 
     if len(matching_items) > 0:
