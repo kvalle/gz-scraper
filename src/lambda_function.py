@@ -1,12 +1,13 @@
-#!/usr/bin/env python
-
 import filtering
 import scrape
 import dynamodb
 import mail
 
-if __name__ == "__main__":
+def lambda_handler(event, context):
+    run_scraper()
 
+
+def run_scraper():
     backlog = dynamodb.get_backlog()
     new_games = scrape.get_games(number_of_pages=3)
     matching_items = filtering.filter_relevant_items(new_games, backlog)
