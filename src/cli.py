@@ -42,6 +42,9 @@ if __name__ == "__main__":
         default=["insert", "expansion"],
         help="keywords to exclude (default: insert, expansion)")
 
+    parser_remove = subparsers.add_parser('remove', help='remove a backlog item')
+    parser_remove.add_argument('name', help="name of item")
+
     args = parser.parse_args()
 
     if args.subcommand == "scrape":
@@ -52,3 +55,6 @@ if __name__ == "__main__":
     elif args.subcommand == "upsert":
         dynamodb.add_item(args.name, args.exclude)
         print("Item added.")
+    elif args.subcommand == "remove":
+        dynamodb.remove_item(args.name)
+        print("Item removed.")

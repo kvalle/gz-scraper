@@ -28,3 +28,11 @@ def add_item(name, excluded_keywords):
         'game_name': name,
         'exclude_keywords': excluded_keywords
     })
+
+def remove_item(name):
+    table.delete_item(
+        Key={
+            'game_name': name,
+            'for_sale': 'false'
+        }
+    )
