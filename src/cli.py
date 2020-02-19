@@ -37,7 +37,10 @@ if __name__ == "__main__":
 
     parser_add = subparsers.add_parser('upsert', help='insert/update a backlog item')
     parser_add.add_argument('name', help="name of item")
-    parser_add.add_argument('--exclude', nargs='*', default=["insert", "update"], help="keywords to exclude")
+    parser_add.add_argument('--exclude',
+        nargs='*',
+        default=["insert", "expansion"],
+        help="keywords to exclude (default: insert, expansion)")
 
     args = parser.parse_args()
 
