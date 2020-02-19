@@ -21,3 +21,10 @@ def mark_as_found(item):
             'for_sale': 'false'
         }
     )
+
+def add_item(name, excluded_keywords):
+    table.put_item(Item={
+        'for_sale': 'false',
+        'game_name': name,
+        'exclude_keywords': excluded_keywords
+    })

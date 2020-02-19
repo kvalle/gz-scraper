@@ -11,8 +11,13 @@ def print_backlog():
 
     for item in dynamodb.get_backlog():
         name = item["game_name"]
-        excludes = ", ".join(item["exclude_keywords"])
-        print('- "{}" (excluded keywords: {})'.format(name, excludes))
+        print('- "{}"'.format(name), end = '')
+
+        if isinstance(item["exclude_keywords"], list) and len(item["exclude_keywords"]) > 0:
+            excludes = ", ".join(item["exclude_keywords"])
+            print(' (excluded keywords: {})'.format(excludes), end='')
+
+        print()
 
 if __name__ == "__main__":
 
@@ -30,6 +35,10 @@ if __name__ == "__main__":
     parser_scrape = subparsers.add_parser('scrape', help='trigger the scraper locally')
     parser_list = subparsers.add_parser('list', help='display backlog items')
 
+    parser_add = subparsers.add_parser('upsert', help='insert/update a backlog item')
+    parser_add.add_argument('name', help="name of item")
+    parser_add.add_argument('--exclude', nargs='*', default=["insert", "update"], help="keywords to exclude")
+
     args = parser.parse_args()
 
     if args.subcommand == "scrape":
@@ -37,3 +46,6 @@ if __name__ == "__main__":
         lambda_function.run_scraper()
     elif args.subcommand == "list":
         print_backlog()
+    elif args.subcommand == "upsert":
+        dynamodb.add_item(args.name, args.exclude)
+        print("Item added.")
